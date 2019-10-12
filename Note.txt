@@ -1,0 +1,12 @@
+https://svelte.dev/tutorial/basics
+https://svelte.dev/blog/the-easiest-way-to-get-started
+
+==================================
+
+
+C:\react>npx degit sveltejs/template my-svelte-project2
+C:\react>cd my-svelte-project2
+C:\react\my-svelte-project2>npm install
+npm run dev
+
+C:\react\my-svelte-project2>git init
