@@ -14,3 +14,9 @@ C:\react\my-svelte-project2>git add .
 C:\react\my-svelte-project2>git commit -m "first commit"
 C:\react\my-svelte-project2>git remote add origin git@github.com:Annie-Huang/my-svelte-project2.git
 C:\react\my-svelte-project2>git push -u origin master
+
+
+=======================================
+
+Shorthand attributes:
+<img {src} alt="A man dances.">
