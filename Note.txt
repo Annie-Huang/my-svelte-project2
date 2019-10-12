@@ -1,6 +1,12 @@
 https://svelte.dev/tutorial/basics
 https://svelte.dev/blog/the-easiest-way-to-get-started
 
+https://github.com/sveltejs/eslint-plugin-svelte3
+https://www.npmjs.com/package/eslint-plugin-svelte3
+https://www.rockyourcode.com/prettier-and-es-lint-setup-for-svelte-js
+https://github.com/sveltejs/eslint-plugin-svelte3
+https://github.com/UnwrittenFun/prettier-plugin-svelte
+
 ==================================
 
 
@@ -15,8 +21,20 @@ C:\react\my-svelte-project2>git commit -m "first commit"
 C:\react\my-svelte-project2>git remote add origin git@github.com:Annie-Huang/my-svelte-project2.git
 C:\react\my-svelte-project2>git push -u origin master
 
+C:\react\my-svelte-project2>npm install --save-dev eslint-plugin-svelte3
+C:\react\my-svelte-project2>npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-prettier
+C:\react\my-svelte-project2>npm install --save-dev babel-eslint
+
+C:\react\my-svelte-project2>eslint --fix src/App.svelte
+C:\react\my-svelte-project2>prettier --write --plugin-search-dir=. src\App.svelte
+
 
 =======================================
 
 Shorthand attributes:
 <img {src} alt="A man dances.">
+
+First, you'll need to integrate Svelte with a build tool. Popular choices are:
+Rollup / rollup-plugin-svelte
+webpack / svelte-loader
+Parcel / parcel-plugin svelte
