@@ -1,11 +1,5 @@
 <script>
-	export let name;
+	let name = 'world'
 </script>
 
-<style>
-	h1 {
-		color: purple;
-	}
-</style>
-
-<h1>Hello {name}!</h1>
+<h1>Hello {name.toUpperCase()}!</h1>
