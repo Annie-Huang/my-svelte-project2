@@ -9,10 +9,10 @@ module.exports = {
         browser: true
     },
     plugins: [
-        'prettier',
+        // 'prettier',
         'svelte3'
     ],
-    extends: ['prettier'],
+    // extends: ['prettier'],
     overrides: [
         {
             files: ['**/*.svelte'],
@@ -20,7 +20,9 @@ module.exports = {
         }
     ],
     rules: {
-        'prettier/prettier': 'error'
+        "prettier/prettier": "error",
+        "semi": [2, "always"],
+        "quotes": ["error", "single", { "allowTemplateLiterals": true }]
     },
     settings: {
         // ...
