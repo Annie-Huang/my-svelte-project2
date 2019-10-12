@@ -8,6 +8,10 @@
         // event handler code goes here
         count += 1;
     }
+
+    // Reactive values become particularly valuable when you need to reference them multiple times,
+    // or you have values that depend on other reactive values.
+    $: doubled = count * 2;
 </script>
 
 <!--Svelte doesn't perform any sanitization of the expression inside {@html ...} before it gets inserted into the DOM.
@@ -19,3 +23,5 @@
 <button on:click={handleClick}>
     Clicked {count} {count === 1 ? 'time' : 'times'}
 </button>
+
+<p>{count} doubled is {doubled}</p>
