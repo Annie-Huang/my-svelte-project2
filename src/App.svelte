@@ -21,6 +21,31 @@
         alert(`count is dangerously high!`);
         count = 9;
     }
+
+    let numbers = [1, 2, 3, 4];
+
+    // function addNumber() {
+    //     numbers.push(numbers.length + 1);
+    //     // Because Svelte's reactivity is triggered by assignments, using array methods like push and splice
+    //     // won't automatically cause updates. For example, clicking the button doesn't do anything.
+    //     // One way to fix that is to add an assignment that would otherwise be redundant:
+    //     numbers = numbers;
+    // }
+
+    // // Or: use the following.
+    // // You can use similar patterns to replace pop, shift, unshift and splice.
+    // function addNumber() {
+    //     numbers = [...numbers, numbers.length + 1];
+    // }
+
+    // Or: this..
+    // Assignments to properties of arrays and objects — e.g. obj.foo += 1 or array[i] = x — work the same way
+    // as assignments to the values themselves
+    function addNumber() {
+        numbers[numbers.length] = numbers.length + 1;
+    }
+
+    $: sum = numbers.reduce((t, n) => t + n, 0);
 </script>
 
 <!--Svelte doesn't perform any sanitization of the expression inside {@html ...} before it gets inserted into the DOM.
@@ -34,3 +59,9 @@
 </button>
 
 <p>{count} doubled is {doubled}</p>
+
+<p>{numbers.join(' + ')} = {sum}</p>
+
+<button on:click={addNumber}>
+    Add a number
+</button>
