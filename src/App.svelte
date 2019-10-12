@@ -1,4 +1,6 @@
 <script>
+    import Nested from './Nested.svelte';
+
 	let name = 'world';
     let src = 'tutorial/image.gif';
 </script>
@@ -19,3 +21,4 @@
 <img {src} alt="A man dances.">
 
 <p>This is a paragraph.</p>
+<Nested/>
