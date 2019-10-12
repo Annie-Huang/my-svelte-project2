@@ -1,5 +1,7 @@
 <!--From Introduction/HTML tags to -->
 <script>
+    import Nested from './Nested.svelte';
+
     let string = `this string contains some <strong>HTML!!!</strong>`;
 
     let count = 0;
@@ -65,3 +67,5 @@
 <button on:click={addNumber}>
     Add a number
 </button>
+
+<Nested answer={42}/>
