@@ -12,6 +12,15 @@
     // Reactive values become particularly valuable when you need to reference them multiple times,
     // or you have values that depend on other reactive values.
     $: doubled = count * 2;
+
+    $: {
+        console.log(`the count is ${count}`);
+        alert(`I SAID THE COUNT IS ${count}`);
+    }
+    $: if (count >= 10) {
+        alert(`count is dangerously high!`);
+        count = 9;
+    }
 </script>
 
 <!--Svelte doesn't perform any sanitization of the expression inside {@html ...} before it gets inserted into the DOM.
