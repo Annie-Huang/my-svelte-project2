@@ -13,7 +13,14 @@
         'Mint choc chip',
         'Raspberry ripple'
     ];
+
+    import marked from 'marked';
+    let value = `Some words are *italic*, some are **bold**`;
 </script>
+
+<style>
+    textarea { width: 100%; height: 200px; }
+</style>
 
 <h2>Size</h2>
 <!--Not working for the following one...-->
@@ -74,3 +81,10 @@
     </p>
 {/if}
 
+<br/>
+
+<textarea bind:value={value}></textarea>
+
+{@html marked(value)}
+
+<textarea bind:value></textarea>
