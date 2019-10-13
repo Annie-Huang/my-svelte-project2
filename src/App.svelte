@@ -1,120 +1,46 @@
-<!--From Lifecycle/beforeUpdate and afterUpdate -->
+<!--From tick to-->
 <script>
-    import Eliza from 'elizabot';
-    import { beforeUpdate, afterUpdate } from 'svelte';
+    import { tick } from 'svelte';
+    let text = `Select some text and hit the tab key to toggle uppercase`;
 
-    let div;
-    let autoscroll;
+    async function handleKeydown(event) {
+        if (event.which !== 9) return;
 
-    // The beforeUpdate function schedules work to happen immediately before the DOM has been updated.
-    // afterUpdate is its counterpart, used for running code once the DOM is in sync with your data.
-    // Together, they're useful for doing things imperatively that are difficult to achieve in a purely state-driven way,
-    // like updating the scroll position of an element.
-    // This  chatbot is annoying to use, because you have to keep scrolling the chat window. Let's fix that.
+        event.preventDefault();
 
-    // Note that beforeUpdate will first run before the component has mounted,
-    // so we need to check for the existence of div before reading its properties.
-    beforeUpdate(() => {
-        // determine whether we should auto-scroll
-        // once the DOM is updated...
-        autoscroll = div && (div.offsetHeight + div.scrollTop) > (div.scrollHeight - 20);
-    });
+        const { selectionStart, selectionEnd, value } = this;
+        const selection = value.slice(selectionStart, selectionEnd);
 
-    afterUpdate(() => {
-        // ...the DOM is now in sync with the data
-        if (autoscroll) div.scrollTo(0, div.scrollHeight);
+        const replacement = /[a-z]/.test(selection)
+                ? selection.toUpperCase()
+                : selection.toLowerCase();
 
-    });
+        text = (
+                value.slice(0, selectionStart) +
+                replacement +
+                value.slice(selectionEnd)
+        );
 
-    const eliza = new Eliza();
+        // The tick function is unlike other lifecycle functions in that you can call it any time,
+        // not just when the component first initialises. It returns a promise that resolves as soon as any pending state
+        // changes have been applied to the DOM (or immediately, if there are no pending state changes).
 
-    let comments = [
-        { author: 'eliza', text: eliza.getInitial() }
-    ];
+        // When you invalidate component state in Svelte, it doesn't update the DOM immediately.
+        // Instead, it waits until the next microtask to see if there are any other changes that need to be applied,
+        // including in other components. Doing so avoids unnecessary work and allows the browser to batch things more effectively.
+        await tick();
 
-    function handleKeydown(event) {
-        if (event.which === 13) {
-            const text = event.target.value;
-            if (!text) return;
-
-            comments = comments.concat({
-                author: 'user',
-                text
-            });
-
-            event.target.value = '';
-
-            const reply = eliza.transform(text);
-
-            setTimeout(() => {
-                comments = comments.concat({
-                    author: 'eliza',
-                    text: '...',
-                    placeholder: true
-                });
-
-                setTimeout(() => {
-                    comments = comments.filter(comment => !comment.placeholder).concat({
-                        author: 'eliza',
-                        text: reply
-                    });
-                }, 500 + Math.random() * 500);
-            }, 200 + Math.random() * 200);
-        }
+        // this has no effect, because the DOM hasn't updated yet
+        this.selectionStart = selectionStart;
+        this.selectionEnd = selectionEnd;
     }
 </script>
 
 <style>
-    .chat {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        max-width: 320px;
-    }
-
-    .scrollable {
-        flex: 1 1 auto;
-        border-top: 1px solid #eee;
-        margin: 0 0 0.5em 0;
-        overflow-y: auto;
-    }
-
-    article {
-        margin: 0.5em 0;
-    }
-
-    .user {
-        text-align: right;
-    }
-
-    span {
-        padding: 0.5em 1em;
-        display: inline-block;
-    }
-
-    .eliza span {
-        background-color: #eee;
-        border-radius: 1em 1em 1em 0;
-    }
-
-    .user span {
-        background-color: #0074D9;
-        color: white;
-        border-radius: 1em 1em 0 1em;
-        word-break: break-all;
+    textarea {
+        width: 100%;
+        height: 200px;
     }
 </style>
 
-<div class="chat">
-    <h1>Eliza</h1>
-
-    <div class="scrollable" bind:this={div}>
-        {#each comments as comment}
-            <article class={comment.author}>
-                <span>{comment.text}</span>
-            </article>
-        {/each}
-    </div>
-
-    <input on:keydown={handleKeydown}>
-</div>
+<textarea value={text} on:keydown={handleKeydown}></textarea>
