@@ -10,6 +10,12 @@
 
     let a = 1;
     let b = 2;
+
+    let yes = false;
+
+    function handleClick1() {
+        alert('clicked1');
+    }
 </script>
 
 <FancyButton on:click={handleClick} />
@@ -39,3 +45,20 @@
 </label>
 
 <p>{a} + {b} = {a + b}</p>
+
+<br/>
+<label>
+    <input type=checkbox bind:checked={yes}>
+    Yes! Send me regular email spam
+</label>
+
+{#if yes}
+    <p>Thank you. We will bombard your inbox and sell your personal details.</p>
+{:else}
+    <p>You must opt in to continue. If you're not paying, you're the product.</p>
+{/if}
+
+<!--Add the on:click function as it's hard to see the button is disabled in chrome browsers with its current style.-->
+<button disabled={!yes} on:click={handleClick1}>
+    Subscribe
+</button>
