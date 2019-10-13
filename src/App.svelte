@@ -1,27 +1,10 @@
-<!--From Events/Event modifiers to -->
+<!--From Events/DOM event forwarding to -->
 <script>
+    import FancyButton from './FancyButton.svelte';
 
     function handleClick() {
-        alert('no more alerts')
+        alert('clicked');
     }
-
-    import Inner from './Inner.svelte';
-
-    function handleMessage(event) {
-        alert(event.detail.text);
-    }
-
-    import Outer from './Outer.svelte';
 </script>
 
-<button on:click|once={handleClick}>
-    Click me
-</button>
-
-<br/>
-Inner:
-<Inner on:message={handleMessage}/>
-
-<br/>
-Outer
-<Outer on:message={handleMessage}/>
+<FancyButton on:click={handleClick}/>
