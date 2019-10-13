@@ -14,6 +14,8 @@
     function toggle() {
         user.loggedIn = !user.loggedIn;
     }
+
+    let x = 7;
 </script>
 
 <!-- Conversely, if you need to reference all the props that were passed into a component,
@@ -47,4 +49,24 @@
         <button on:click={toggle}>
             Log in
         </button>
+{/if}
+
+
+
+{#if x > 10}
+        <p>{x} is greater than 10</p>
+{:else}
+    {#if 5 > x}
+            <p>{x} is less than 5</p>
+    {:else}
+            <p>{x} is between 5 and 10</p>
+    {/if}
+{/if}
+
+{#if x > 10}
+        <p>{x} is greater than 10</p>
+{:else if 5 > x}
+        <p>{x} is less than 5</p>
+{:else}
+        <p>{x} is between 5 and 10</p>
 {/if}
