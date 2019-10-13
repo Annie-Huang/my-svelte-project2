@@ -1,90 +1,44 @@
-<!--From Bindings/Group inputs to -->
+<!--From Bindings/Select bindins to -->
 <script>
-    let scoops = 1;
-    let flavours = ['Mint choc chip'];
-
-    function join(flavours) {
-        if (flavours.length === 1) return flavours[0];
-        return `${flavours.slice(0, -1).join(', ')} and ${flavours[flavours.length - 1]}`;
-    }
-
-    let menu = [
-        'Cookies and cream',
-        'Mint choc chip',
-        'Raspberry ripple'
+    let questions = [
+        { id: 1, text: `Where did you go to school?` },
+        { id: 2, text: `What is your mother's name?` },
+        { id: 3, text: `What is another personal fact that an attacker could easily find with Google?` }
     ];
 
-    import marked from 'marked';
-    let value = `Some words are *italic*, some are **bold**`;
+    let selected;
+
+    let answer = '';
+
+    function handleSubmit() {
+        alert(`answered question ${selected.id} (${selected.text}) with "${answer}"`);
+    }
 </script>
 
 <style>
-    textarea { width: 100%; height: 200px; }
+    input { display: block; width: 500px; max-width: 100%; }
 </style>
 
-<h2>Size</h2>
-<!--Not working for the following one...-->
-<!--{#each menu as scoops, index}-->
-<!--    <label>-->
-<!--        <input type=radio bind:group={scoops} value={index}>-->
-<!--        {index} scoop(s)-->
-<!--    </label>-->
-<!--{/each}-->
+<h2>Insecurity questions</h2>
 
-<label>
-    <input type=radio bind:group={scoops} value={1}>
-    One scoop
-</label>
+<form on:submit|preventDefault={handleSubmit}>
+    <!-- Note that the <option> values are objects rather than strings. Svelte doesn't mind.
+         Because we haven't set an initial value of selected, the binding will set it to the default value
+         (the first in the list) automatically. Be careful though — until the binding is initialised,
+         selected remains undefined, so we can't blindly reference e.g. selected.id in the template.-->
+    <select bind:value={selected} on:change="{() => answer = ''}">
+        {#each questions as question}
+            <option value={question}>
+                {question.text}
+            </option>
+        {/each}
+    </select>
 
-<label>
-    <input type=radio bind:group={scoops} value={2}>
-    Two scoops
-</label>
+    <input bind:value={answer}>
 
-<label>
-    <input type=radio bind:group={scoops} value={3}>
-    Three scoops
-</label>
+    <button disabled={!answer} type=submit>
+        Submit
+    </button>
+</form>
 
-<h2>Flavours</h2>
-
-<!--<label>-->
-<!--    <input type=checkbox bind:group={flavours} value="Cookies and cream">-->
-<!--    Cookies and cream-->
-<!--</label>-->
-
-<!--<label>-->
-<!--    <input type=checkbox bind:group={flavours} value="Mint choc chip">-->
-<!--    Mint choc chip-->
-<!--</label>-->
-
-<!--<label>-->
-<!--    <input type=checkbox bind:group={flavours} value="Raspberry ripple">-->
-<!--    Raspberry ripple-->
-<!--</label>-->
-
-{#each menu as flavour}
-    <label>
-        <input type=checkbox bind:group={flavours} value={flavour}>
-        {flavour}
-    </label>
-{/each}
-
-{#if flavours.length === 0}
-    <p>Please select at least one flavour</p>
-{:else if flavours.length > scoops}
-    <p>Can't order more flavours than scoops!</p>
-{:else}
-    <p>
-        You ordered {scoops} {scoops === 1 ? 'scoop' : 'scoops'}
-        of {join(flavours)}
-    </p>
-{/if}
-
-<br/>
-
-<textarea bind:value={value}></textarea>
-
-{@html marked(value)}
-
-<textarea bind:value></textarea>
+<p>selected question {selected ? selected.id : '[waiting...]'}</p>
