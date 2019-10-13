@@ -13,7 +13,17 @@
         if (flavours.length === 1) return flavours[0];
         return `${flavours.slice(0, -1).join(', ')} and ${flavours[flavours.length - 1]}`;
     }
+
+    let html = '<p>Write some text!</p>';
 </script>
+
+<style>
+    [contenteditable] {
+        padding: 0.5em;
+        border: 1px solid #eee;
+        border-radius: 4px;
+    }
+</style>
 
 <h2>Size</h2>
 
@@ -52,3 +62,8 @@
         of {join(flavours)}
     </p>
 {/if}
+
+
+<div contenteditable="true" bind:innerHTML={html}></div>
+
+<pre>{html}</pre>
