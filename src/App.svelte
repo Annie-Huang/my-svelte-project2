@@ -1,60 +1,21 @@
-<!--From Bindings/Component bindings to -->
+<!--From Lifecycle/onDestroy to -->
 <script>
-    import Keypad from './Keypad.svelte';
+    // import { onDestroy } from 'svelte';
+    //
+    // let seconds = 0;
+    // const interval = setInterval(() => seconds += 1, 1000);
+    //
+    // // For example, we can add a setInterval function when our component initialises, and clean it up when it's
+    // // no longer relevant. Doing so prevents memory leaks.
+    // onDestroy(() => clearInterval(interval));
 
-    let pin;
-    $: view = pin ? pin.replace(/\d(?!$)/g, '•') : 'enter your pin';
+    import { onInterval } from './utils.js';
 
-    function handleSubmit() {
-        alert(`submitted ${pin}`);
-    }
-
-
-    import { onMount } from 'svelte';
-
-    let photos = [];
-
-    // It's recommended to put the fetch in onMount rather than at the top level of the <script> because of
-    // server-side rendering (SSR). With the exception of onDestroy, lifecycle functions don't run during SSR,
-    // which means we can avoid fetching data that should be loaded lazily once the component has been mounted in the DOM.
-    // If the onMount callback returns a function, that function will be called when the component is destroyed.
-    onMount(async () => {
-        const res = await fetch(`https://jsonplaceholder.typicode.com/photos?_limit=20`);
-        photos = await res.json();
-    });
+    let seconds = 0;
+    onInterval(() => seconds += 1, 1000);
 </script>
 
-<style>
-    .photos {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-gap: 8px;
-    }
-
-    figure, img {
-        width: 100%;
-        margin: 0;
-    }
-</style>
-
-<h1 style="color: {pin ? '#333' : '#ccc'}">{view}</h1>
-
-<!--Use component bindings sparingly. It can be difficult to track the flow of data around your application
-    if you have too many of them, especially if there is no 'single source of truth'.-->
-<Keypad bind:value={pin} on:submit={handleSubmit}/>
-
-
-<h1>Photo album</h1>
-
-<div class="photos">
-    {#each photos as photo}
-        <figure>
-            <img src={photo.thumbnailUrl} alt={photo.title}>
-            <figcaption>{photo.title}</figcaption>
-        </figure>
-    {:else}
-    <!-- this block renders when photos.length === 0 -->
-        <p>loading...</p>
-    {/each}
-</div>
+<p>
+    The page has been open for
+    {seconds} {seconds === 1 ? 'second' : 'seconds'}
+</p>
