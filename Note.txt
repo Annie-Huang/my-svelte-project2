@@ -48,3 +48,16 @@ capture — fires the handler during the capture phase instead of the bubbling p
 once — remove the handler after the first time it runs
 self — only trigger handler if event.target is the element itself
 You can chain modifiers together, e.g. on:click|once|capture={...}.
+
+
+The complete set of bindings for <audio> and <video> is as follows — four readonly bindings...
+duration (readonly) — the total duration of the video, in seconds
+buffered (readonly) — an array of {start, end} objects
+seekable (readonly) — ditto
+played (readonly) — ditto
+...and four two-way bindings:
+
+currentTime — the current point in the video, in seconds
+playbackRate — how fast to play the video, where 1 is 'normal'
+paused — this one should be self-explanatory
+volume — a value between 0 and 1
