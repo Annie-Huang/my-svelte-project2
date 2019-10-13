@@ -1,6 +1,7 @@
 <!--From Props/Spread props to -->
 <script>
     import Info from './Info.svelte';
+    import Thing from './Thing.svelte';
 
     const pkg = {
         name: 'svelte',
@@ -22,6 +23,19 @@
         { id: 'z_AbfPXTKms', name: 'Maru' },
         { id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat' }
     ];
+
+
+    let things = [
+        { id: 1, color: '#0d0887' },
+        { id: 2, color: '#6a00a8' },
+        { id: 3, color: '#b12a90' },
+        { id: 4, color: '#e16462' },
+        { id: 5, color: '#fca636' }
+    ];
+
+    function handleClick() {
+        things = things.slice(1);
+    }
 </script>
 
 <!-- Conversely, if you need to reference all the props that were passed into a component,
@@ -94,3 +108,20 @@
         </a></li>
     {/each}
 </ul>
+
+
+
+<button on:click={handleClick}>
+    Remove first thing
+</button>
+
+<!--{#each things as thing}-->
+<!-- If you use the above syntax, it will remove <Thing> components from the end and updating the color for those that remain.-->
+
+<!--The (thing.id) tells Svelte how to figure out what changed.
+    You can use any object as the key, as Svelte uses a Map internally — in other words you could do (thing)
+    instead of (thing.id). Using a string or number is generally safer, however, since it means identity persists
+    without referential equality, for example when updating with fresh data from an API server.-->
+{#each things as thing (thing.id)}
+        <Thing current={thing.color}/>
+{/each}
