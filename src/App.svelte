@@ -1,5 +1,6 @@
 <!--From Events/Event modifiers to -->
 <script>
+
     function handleClick() {
         alert('no more alerts')
     }
@@ -9,6 +10,8 @@
     function handleMessage(event) {
         alert(event.detail.text);
     }
+
+    import Outer from './Outer.svelte';
 </script>
 
 <button on:click|once={handleClick}>
@@ -16,4 +19,9 @@
 </button>
 
 <br/>
+Inner:
 <Inner on:message={handleMessage}/>
+
+<br/>
+Outer
+<Outer on:message={handleMessage}/>
