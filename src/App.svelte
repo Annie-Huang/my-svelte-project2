@@ -16,6 +16,12 @@
     }
 
     let x = 7;
+
+    let cats = [
+        { id: 'J---aiyznGQ', name: 'Keyboard Cat' },
+        { id: 'z_AbfPXTKms', name: 'Maru' },
+        { id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat' }
+    ];
 </script>
 
 <!-- Conversely, if you need to reference all the props that were passed into a component,
@@ -71,3 +77,20 @@
         <p>{x} is between 5 and 10</p>
 {/if}
 
+
+
+<h1>The Famous Cats of YouTube</h1>
+
+<ul>
+    <!-- The expression (cats, in this case) can be any array or array-like object (i.e. it has a length property).
+         You can loop over generic iterables with each [...iterable].-->
+<!--    {#each cats as cat}-->
+<!--    {#each cats as cat, i}-->
+<!--        <li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}">-->
+<!--            {i + 1}: {cat.name}-->
+    {#each cats as { id, name }, i}
+        <li><a target="_blank" href="https://www.youtube.com/watch?v={id}">
+            {i + 1}: {name}
+        </a></li>
+    {/each}
+</ul>
