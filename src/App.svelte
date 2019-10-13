@@ -1,69 +1,52 @@
-<!--From Bindings/Select multiple to -->
+<!--From Bindings/Each block bindings to -->
 <script>
-    let scoops = 1;
-    let flavours = ['Mint choc chip'];
-
-    let menu = [
-        'Cookies and cream',
-        'Mint choc chip',
-        'Raspberry ripple'
+    let todos = [
+        { done: false, text: 'finish Svelte tutorial' },
+        { done: false, text: 'build an app' },
+        { done: false, text: 'world domination' }
     ];
 
-    function join(flavours) {
-        if (flavours.length === 1) return flavours[0];
-        return `${flavours.slice(0, -1).join(', ')} and ${flavours[flavours.length - 1]}`;
+    function add() {
+        todos = todos.concat({ done: false, text: '' });
     }
 
-    let html = '<p>Write some text!</p>';
+    function clear() {
+        todos = todos.filter(t => !t.done);
+    }
+
+    $: remaining = todos.filter(t => !t.done).length;
 </script>
 
 <style>
-    [contenteditable] {
-        padding: 0.5em;
-        border: 1px solid #eee;
-        border-radius: 4px;
+    .done {
+        opacity: 0.4;
     }
 </style>
 
-<h2>Size</h2>
+<h1>Todos</h1>
 
-<label>
-    <input type=radio bind:group={scoops} value={1}>
-    One scoop
-</label>
+<!--Note that interacting with these <input> elements will mutate the array.
+    If you prefer to work with immutable data, you should avoid these bindings and use event handlers instead.-->
+{#each todos as todo}
+    <div class:done={todo.done}>
+        <input
+                type=checkbox
+                bind:checked={todo.done}
+        >
 
-<label>
-    <input type=radio bind:group={scoops} value={2}>
-    Two scoops
-</label>
+        <input
+                placeholder="What needs to be done?"
+                bind:value={todo.text}
+        >
+    </div>
+{/each}
 
-<label>
-    <input type=radio bind:group={scoops} value={3}>
-    Three scoops
-</label>
+<p>{remaining} remaining</p>
 
-<h2>Flavours</h2>
+<button on:click={add}>
+    Add new
+</button>
 
-<select multiple bind:value={flavours}>
-    {#each menu as flavour}
-        <option value={flavour}>
-            {flavour}
-        </option>
-    {/each}
-</select>
-
-{#if flavours.length === 0}
-    <p>Please select at least one flavour</p>
-{:else if flavours.length > scoops}
-    <p>Can't order more flavours than scoops!</p>
-{:else}
-    <p>
-        You ordered {scoops} {scoops === 1 ? 'scoop' : 'scoops'}
-        of {join(flavours)}
-    </p>
-{/if}
-
-
-<div contenteditable="true" bind:innerHTML={html}></div>
-
-<pre>{html}</pre>
+<button on:click={clear}>
+    Clear completed
+</button>
