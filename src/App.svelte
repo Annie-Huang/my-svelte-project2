@@ -1,64 +1,76 @@
-<!--From Events/DOM event forwarding to -->
+<!--From Bindings/Group inputs to -->
 <script>
-    import FancyButton from './FancyButton.svelte';
+    let scoops = 1;
+    let flavours = ['Mint choc chip'];
 
-    function handleClick() {
-        alert('clicked');
+    function join(flavours) {
+        if (flavours.length === 1) return flavours[0];
+        return `${flavours.slice(0, -1).join(', ')} and ${flavours[flavours.length - 1]}`;
     }
 
-    let name = 'world';
-
-    let a = 1;
-    let b = 2;
-
-    let yes = false;
-
-    function handleClick1() {
-        alert('clicked1');
-    }
+    let menu = [
+        'Cookies and cream',
+        'Mint choc chip',
+        'Raspberry ripple'
+    ];
 </script>
 
-<FancyButton on:click={handleClick} />
+<h2>Size</h2>
+<!--Not working for the following one...-->
+<!--{#each menu as scoops, index}-->
+<!--    <label>-->
+<!--        <input type=radio bind:group={scoops} value={index}>-->
+<!--        {index} scoop(s)-->
+<!--    </label>-->
+<!--{/each}-->
 
-<br />
-<!--As a general rule, data flow in Svelte is top down — a parent component can set props on a child component,
-    and a component can set attributes on an element, but not the other way around.
-    we can use the bind:value directive:
-    This means that not only will changes to the value of name update the input value, but changes to the input value will update name.-->
-<input bind:value={name}>
-
-<h1>Hello {name}!</h1>
-
-<br />
-
-<!--In the DOM, everything is a string. That's unhelpful when you're dealing with
-    numeric inputs — type="number" and type="range" — as it means you have to remember to coerce input.value before using it.
-    With bind:value, Svelte takes care of it for you:-->
 <label>
-    <input type=number bind:value={a} min=0 max=10>
-    <input type=range bind:value={a} min=0 max=10>
+    <input type=radio bind:group={scoops} value={1}>
+    One scoop
 </label>
 
 <label>
-    <input type=number bind:value={b} min=0 max=10>
-    <input type=range bind:value={b} min=0 max=10>
+    <input type=radio bind:group={scoops} value={2}>
+    Two scoops
 </label>
 
-<p>{a} + {b} = {a + b}</p>
-
-<br/>
 <label>
-    <input type=checkbox bind:checked={yes}>
-    Yes! Send me regular email spam
+    <input type=radio bind:group={scoops} value={3}>
+    Three scoops
 </label>
 
-{#if yes}
-    <p>Thank you. We will bombard your inbox and sell your personal details.</p>
+<h2>Flavours</h2>
+
+<!--<label>-->
+<!--    <input type=checkbox bind:group={flavours} value="Cookies and cream">-->
+<!--    Cookies and cream-->
+<!--</label>-->
+
+<!--<label>-->
+<!--    <input type=checkbox bind:group={flavours} value="Mint choc chip">-->
+<!--    Mint choc chip-->
+<!--</label>-->
+
+<!--<label>-->
+<!--    <input type=checkbox bind:group={flavours} value="Raspberry ripple">-->
+<!--    Raspberry ripple-->
+<!--</label>-->
+
+{#each menu as flavour}
+    <label>
+        <input type=checkbox bind:group={flavours} value={flavour}>
+        {flavour}
+    </label>
+{/each}
+
+{#if flavours.length === 0}
+    <p>Please select at least one flavour</p>
+{:else if flavours.length > scoops}
+    <p>Can't order more flavours than scoops!</p>
 {:else}
-    <p>You must opt in to continue. If you're not paying, you're the product.</p>
+    <p>
+        You ordered {scoops} {scoops === 1 ? 'scoop' : 'scoops'}
+        of {join(flavours)}
+    </p>
 {/if}
 
-<!--Add the on:click function as it's hard to see the button is disabled in chrome browsers with its current style.-->
-<button disabled={!yes} on:click={handleClick1}>
-    Subscribe
-</button>
