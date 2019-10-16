@@ -1,9 +1,42 @@
-<!--From Transitions/The transition directive to-->
+<!--From Transitions/Custom CSS transitions to-->
 <script>
     import { fade } from 'svelte/transition';
-    import { fly } from 'svelte/transition';
+    import { elasticOut } from 'svelte/easing';
+
     let visible = true;
+
+    function spin(node, { duration }) {
+        return {
+            duration,
+            css: t => {
+                const eased = elasticOut(t);
+
+                return `
+					transform: scale(${eased}) rotate(${eased * 1080}deg);
+					color: hsl(
+						${~~(t * 360)},
+						${Math.min(100, 1000 - 1000 * t)}%,
+						${Math.min(50, 500 - 500 * t)}%
+					);`
+            }
+        };
+    }
 </script>
+
+<style>
+    .centered {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    span {
+        position: absolute;
+        transform: translate(-50%,-50%);
+        font-size: 4em;
+    }
+</style>
 
 <label>
     <input type="checkbox" bind:checked={visible}>
@@ -11,19 +44,9 @@
 </label>
 
 {#if visible}
-    <p transition:fade>
-        Fades in and out1
-    </p>
-
-    <p transition:fly="{{ y: 200, duration: 2000 }}">
-        Flies in and out2
-    </p>
-
-    <p in:fly="{{ y: 200, duration: 2000 }}" out:fade>
-        Flies in, fades out3
-    </p>
+    <div class="centered" in:spin="{{duration: 8000}}" out:fade>
+        <span>transitions!</span>
+    </div>
 {/if}
-
-<br/>
 
 
