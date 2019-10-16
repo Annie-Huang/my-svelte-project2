@@ -1,24 +1,47 @@
-<!--From Stores/Custom stores to-->
+<!--From Motion/Tweened to-->
 <script>
-    import { count } from './stores.js';
-    import { name, greeting } from './stores.js';
+    // import { writable } from 'svelte/store';
+    //
+    // const progress = writable(0);
+
+    import { tweened } from 'svelte/motion';
+
+    // const progress = tweened(0);
+
+    // The svelte/easing module contains the , or you can supply your own p => t function where p and t are both values between 0 and 1.
+    import { cubicOut } from 'svelte/easing';
+
+    const progress = tweened(0, {
+        duration: 400,
+        easing: cubicOut
+    });
 </script>
 
-<h1>The count is {$count}</h1>
+<style>
+    progress {
+        display: block;
+        width: 100%;
+    }
+</style>
 
-<button on:click={count.increment}>+</button>
-<button on:click={count.decrement}>-</button>
-<button on:click={count.reset}>reset</button>
+<progress value={$progress}></progress>
 
+<button on:click="{() => progress.set(0)}">
+    0%
+</button>
 
-<h1>{$greeting}</h1>
-<!--If a store is writable — i.e. it has a set method — you can bind to its value, just as you can bind to
-local component state.-->
-<input bind:value={$name}>
+<button on:click="{() => progress.set(0.25)}">
+    25%
+</button>
 
+<button on:click="{() => progress.set(0.5)}">
+    50%
+</button>
 
-<!--We can also assign directly to store values inside a component. Add a <button> element:-->
-<!--The $name += '!' assignment is equivalent to name.set($name + '!').-->
-<button on:click="{() => $name += '!'}">
-    Add exclamation mark!
+<button on:click="{() => progress.set(0.75)}">
+    75%
+</button>
+
+<button on:click="{() => progress.set(1)}">
+    100%
 </button>
