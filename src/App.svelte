@@ -18,6 +18,10 @@
     <p transition:fly="{{ y: 200, duration: 2000 }}">
         Flies in and out2
     </p>
+
+    <p in:fly="{{ y: 200, duration: 2000 }}" out:fade>
+        Flies in, fades out3
+    </p>
 {/if}
 
 <br/>
