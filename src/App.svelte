@@ -1,58 +1,71 @@
-<!--From Actions/The use directive to-->
+<!--From Actions/Adding parameters to-->
 <script>
-    import { spring } from 'svelte/motion';
-    import { pannable } from './pannable.js';
+    let language = "english";
 
-    // Actions are essentially element-level lifecycle functions. They're useful for things like:
-    //  interfacing with third-party libraries
-    //  lazy-loaded images
-    //  tooltips
-    //  adding custom event handlers
+    const translations = {
+        english: {
+            tooltip: "Switch Languages",
+        },
+        latin: {
+            tooltip: "Itchsway Anguageslay",
+        }
+    };
 
-    const coords = spring({ x: 0, y: 0 }, {
-        stiffness: 0.2,
-        damping: 0.4
-    });
+    function tooltip(node, text) {
+        const tooltip = document.createElement('div');
+        tooltip.textContent = text;
 
-    function handlePanStart() {
-        coords.stiffness = coords.damping = 1;
+        Object.assign(tooltip.style, {
+            position: 'absolute',
+            background: 'black',
+            color: 'white',
+            padding: '0.5em 1em',
+            fontSize: '12px',
+            pointerEvents: 'none',
+            transform: 'translate(5px, -50%)',
+            borderRadius: '2px',
+            transition: 'opacity 0.4s'
+        });
+
+        function position() {
+            const { top, right, bottom } = node.getBoundingClientRect();
+            tooltip.style.top = `${(top + bottom) / 2}px`;
+            tooltip.style.left = `${right}px`;
+        }
+
+        function append() {
+            document.body.appendChild(tooltip);
+            tooltip.style.opacity = 0;
+            setTimeout(() => tooltip.style.opacity = 1);
+            position();
+        }
+
+        function remove() {
+            tooltip.remove();
+        }
+
+        node.addEventListener('mouseenter', append);
+        node.addEventListener('mouseleave', remove);
+
+        return {
+            update(text) {
+                tooltip.textContent = text;
+                position();
+            },
+
+            destroy() {
+                tooltip.remove();
+                node.removeEventListener('mouseenter', append);
+                node.removeEventListener('mouseleave', remove);
+            }
+        };
     }
 
-    function handlePanMove(event) {
-        coords.update($coords => ({
-            x: $coords.x + event.detail.dx,
-            y: $coords.y + event.detail.dy
-        }));
-    }
-
-    function handlePanEnd(event) {
-        coords.stiffness = 0.2;
-        coords.damping = 0.4;
-        coords.set({ x: 0, y: 0 });
+    function toggleLanguage() {
+        language = language === 'english' ? 'latin' : 'english'
     }
 </script>
 
-<style>
-    .box {
-        --width: 100px;
-        --height: 100px;
-        position: absolute;
-        width: var(--width);
-        height: var(--height);
-        left: calc(50% - var(--width) / 2);
-        top: calc(50% - var(--height) / 2);
-        border-radius: 4px;
-        background-color: #ff3e00;
-        cursor: move;
-    }
-</style>
-
-<div class="box"
-     use:pannable
-     on:panstart={handlePanStart}
-     on:panmove={handlePanMove}
-     on:panend={handlePanEnd}
-     style="transform:
-		translate({$coords.x}px,{$coords.y}px)
-		rotate({$coords.x * 0.2}deg)"
-></div>
+<button on:click={toggleLanguage} use:tooltip={translations[language].tooltip}>
+    {language}
+</button>

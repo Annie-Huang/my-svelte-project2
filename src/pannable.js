@@ -37,6 +37,8 @@ export function pannable(node) {
         window.removeEventListener('mouseup', handleMouseup);
     }
 
+    // Like transition functions, an action function receives a node and some optional parameters,
+    // and returns an action object. That object can have a destroy function, which is called when the element is unmounted.
     node.addEventListener('mousedown', handleMousedown);
 
     return {
