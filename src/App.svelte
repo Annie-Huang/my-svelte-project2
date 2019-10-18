@@ -2,6 +2,9 @@
 <script>
     import { quintOut } from 'svelte/easing';
     import { crossfade } from 'svelte/transition';
+    // First, import the flip function — flip stands for  — from svelte/animate:
+    // https://aerotwist.com/blog/flip-your-animations/
+    import { flip } from 'svelte/animate';
 
     const [send, receive] = crossfade({
         duration: d => Math.sqrt(d * 200),
@@ -54,6 +57,7 @@
     }
 </script>
 
+<!--duration can also be a d => milliseconds function, where d is the number of pixels the element has to travel-->
 <div class='board'>
     <input
             placeholder="what needs to be done?"
@@ -66,6 +70,7 @@
             <label
                     in:receive="{{key: todo.id}}"
                     out:send="{{key: todo.id}}"
+                    animate:flip="{{duration: 200}}
             >
                 <input type=checkbox on:change={() => mark(todo, true)}>
                 {todo.description}
@@ -135,6 +140,8 @@
         background-color:hsl(240, 8%, 98%);
     }
 
+    /* Note that all the transitions and animations are being applied with CSS, rather than JavaScript,
+       meaning they won't block (or be blocked by) the main thread. */
     button {
         position: absolute;
         top: 0;
