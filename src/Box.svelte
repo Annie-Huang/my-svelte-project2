@@ -10,7 +10,10 @@
 </style>
 
 <!-- Before a component can accept children, though, it needs to know where to put them. We do this with the <slot> element.-->
+<!-- A component can specify fallbacks for any slots that are left empty, by putting content inside the <slot> element:-->
 <div class="box">
     <!-- content should be injected here -->
-    <slot></slot>
+    <slot>
+        <em>no content was provided</em>
+    </slot>
 </div>
