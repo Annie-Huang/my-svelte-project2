@@ -1,6 +1,7 @@
 <!--From Classes/The class directive to-->
 <script>
     let current = 'foo';
+    let big = false;
 </script>
 
 <style>
@@ -11,6 +12,10 @@
     .active {
         background-color: #ff3e00;
         color: white;
+    }
+
+    .big {
+        font-size: 4em;
     }
 </style>
 
@@ -33,3 +38,24 @@
         class="{current === 'baz' ? 'active' : ''}"
         on:click="{() => current = 'baz'}"
 >baz</button>
+
+
+
+<label>
+    <input type=checkbox bind:checked={big}>
+    big
+</label>
+
+<div class:big={big}>
+    some {big ? 'big' : 'small'} text
+</div>
+
+<div class:big>
+    some {big ? 'big' : 'small'} text
+</div>
+
+<!-- Just remember, tThere is a different bewtween:
+     class="big"    << will apply the style
+     and
+     class:big      << conditionally apply the style
+-->
