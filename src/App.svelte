@@ -1,41 +1,14 @@
-<!--From Component composition/Slot props to-->
+<!--From Context API/setContext and getContext to-->
 <script>
-    import Hoverable from './Hoverable.svelte';
+    import Map from './Map.svelte';
+    import MapMarker from './MapMarker.svelte';
 </script>
 
-<style>
-    div {
-        padding: 1em;
-        margin: 0 0 1em 0;
-        background-color: #eee;
-    }
-
-    .active {
-        background-color: #ff3e00;
-        color: white;
-    }
-</style>
-
-<!--Then, to expose hovering to the contents of the <Hoverable> component, we use the let directive:-->
-<!--<Hoverable let:hovering={hovering}>-->
-<!--    <div class:active={hovering}>-->
-<!--        {#if hovering}-->
-<!--            <p>I am being hovered upon.</p>-->
-<!--        {:else}-->
-<!--            <p>Hover over me!</p>-->
-<!--        {/if}-->
-<!--    </div>-->
-<!--</Hoverable>-->
-
-<!--renaming hovering to active-->
-<!--You can have as many of these components as you like, and the slotted props will remain local to the component
-    where they're declared.-->
-<Hoverable let:hovering={active}>
-    <div class:active>
-        {#if active}
-            <p>I am being hovered upon.</p>
-        {:else}
-            <p>Hover over me!</p>
-        {/if}
-    </div>
-</Hoverable>
+<Map lat={35} lon={-84} zoom={3.5}>
+    <MapMarker lat={37.8225} lon={-122.0024} label="Svelte Body Shaping"/>
+    <MapMarker lat={33.8981} lon={-118.4169} label="Svelte Barbershop & Essentials"/>
+    <MapMarker lat={29.7230} lon={-95.4189} label="Svelte Waxing Studio"/>
+    <MapMarker lat={28.3378} lon={-81.3966} label="Svelte 30 Nutritional Consultants"/>
+    <MapMarker lat={40.6483} lon={-74.0237} label="Svelte Brands LLC"/>
+    <MapMarker lat={40.6986} lon={-74.4100} label="Svelte Medical Systems"/>
+</Map>
