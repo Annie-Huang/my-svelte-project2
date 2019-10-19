@@ -1,87 +1,41 @@
-<!--From Classes/The class directive to-->
+<!--From Component composition/Slot props to-->
 <script>
-    import Box from './Box.svelte';
-    import ContactCard from './ContactCard.svelte';
-
-    let current = 'foo';
-    let big = false;
+    import Hoverable from './Hoverable.svelte';
 </script>
 
 <style>
-    button {
-        display: block;
+    div {
+        padding: 1em;
+        margin: 0 0 1em 0;
+        background-color: #eee;
     }
 
     .active {
         background-color: #ff3e00;
         color: white;
     }
-
-    .big {
-        font-size: 4em;
-    }
 </style>
 
-<button
-        class="{current === 'foo' ? 'active' : ''}"
-        on:click="{() => current = 'foo'}"
->foo</button>
+<!--Then, to expose hovering to the contents of the <Hoverable> component, we use the let directive:-->
+<!--<Hoverable let:hovering={hovering}>-->
+<!--    <div class:active={hovering}>-->
+<!--        {#if hovering}-->
+<!--            <p>I am being hovered upon.</p>-->
+<!--        {:else}-->
+<!--            <p>Hover over me!</p>-->
+<!--        {/if}-->
+<!--    </div>-->
+<!--</Hoverable>-->
 
-<button
-        class:active="{current === 'foo'}"
-        on:click="{() => current = 'foo'}"
->foo</button>
-
-<button
-        class="{current === 'bar' ? 'active' : ''}"
-        on:click="{() => current = 'bar'}"
->bar</button>
-
-<button
-        class="{current === 'baz' ? 'active' : ''}"
-        on:click="{() => current = 'baz'}"
->baz</button>
-
-
-
-<label>
-    <input type=checkbox bind:checked={big}>
-    big
-</label>
-
-<div class:big={big}>
-    some {big ? 'big' : 'small'} text
-</div>
-
-<div class:big>
-    some {big ? 'big' : 'small'} text
-</div>
-
-<!-- Just remember, tThere is a different bewtween:
-     class="big"    << will apply the style
-     and
-     class:big      << conditionally apply the style
--->
-
-
-
-
-<Box>
-    <h2>Hello!</h2>
-    <p>This is a box. It can contain anything.</p>
-</Box>
-
-<Box />
-
-
-
-<ContactCard>
-    <span slot="name">
-		P. Sherman
-	</span>
-
-    <span slot="address">
-		42 Wallaby Way<br>
-		Sydney
-	</span>
-</ContactCard>
+<!--renaming hovering to active-->
+<!--You can have as many of these components as you like, and the slotted props will remain local to the component
+    where they're declared.-->
+<Hoverable let:hovering={active}>
+    <div class:active>
+        {#if active}
+            <p>I am being hovered upon.</p>
+        {:else}
+            <p>Hover over me!</p>
+        {/if}
+    </div>
+</Hoverable>
