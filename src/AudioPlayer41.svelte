@@ -1,17 +1,4 @@
-<script context="module">
-    const elements = new Set();
-
-    // Anything exported from a context="module" script block becomes an export from the module itself.
-    export function stopAll() {
-        elements.forEach(element => {
-            element.pause();
-        });
-    }
-</script>
-
 <script>
-    import { onMount } from 'svelte';
-
     export let src;
     export let title;
     export let composer;
@@ -20,15 +7,9 @@
     let audio;
     let paused = true;
 
-    onMount(() => {
-        elements.add(audio);
-        return () => elements.delete(audio);
-    });
-
     function stopOthers() {
-        elements.forEach(element => {
-            if (element !== audio) element.pause();
-        });
+        if (current && current !== audio) current.pause();
+        current = audio;
     }
 </script>
 
@@ -38,6 +19,15 @@
     audio { width: 100%; margin: 0.5em 0 1em 0; }
     .playing { color: #ff3e00; }
 </style>
+
+<!-- Very occasionally, you'll need to run some code outside of an individual component instance.
+     For example, you can play all five of these audio players simultaneously; it would be better if playing one stopped all the others.
+
+     We can do that by declaring a <script context="module"> block. Code contained inside it will run once,
+     when the module first evaluates, rather than when a component is instantiated. -->
+<script context="module">
+    let current;
+</script>
 
 <article class:playing={!paused}>
     <h2>{title}</h2>

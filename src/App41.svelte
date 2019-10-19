@@ -1,12 +1,7 @@
-<!--From Module context/Exports to-->
+<!--From Module context/Sharing code to Module context/Sharing code-->
 <script>
-    // You can't have a default export, because the component is the default export.
-    import AudioPlayer, { stopAll } from './AudioPlayer.svelte';
+    import AudioPlayer from './AudioPlayer.svelte';
 </script>
-
-<button  on:click={stopAll}>
-    stop all audio
-</button>
 
 <!-- https://musopen.org/music/9862-the-blue-danube-op-314/ -->
 <AudioPlayer
