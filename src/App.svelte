@@ -1,6 +1,7 @@
 <!--From Classes/The class directive to-->
 <script>
     import Box from './Box.svelte';
+    import ContactCard from './ContactCard.svelte';
 
     let current = 'foo';
     let big = false;
@@ -71,3 +72,16 @@
 </Box>
 
 <Box />
+
+
+
+<ContactCard>
+    <span slot="name">
+		P. Sherman
+	</span>
+
+    <span slot="address">
+		42 Wallaby Way<br>
+		Sydney
+	</span>
+</ContactCard>
