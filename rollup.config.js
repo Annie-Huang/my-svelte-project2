@@ -1,3 +1,4 @@
+import copy from "rollup-plugin-copy-glob";
 import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -15,6 +16,9 @@ export default {
 		file: 'public/bundle.js'
 	},
 	plugins: [
+        copy([
+            { files: 'src/assets/*.*', dest: 'public/assets' }
+        ]),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
