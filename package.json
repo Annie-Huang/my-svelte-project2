@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "elizabot": "0.0.2",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "sirv-cli": "^0.4.4"
   },
   "scripts": {
